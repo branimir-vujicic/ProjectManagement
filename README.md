@@ -3,6 +3,9 @@
 This document contains description of version 1.0 of API for pm application. pm is a REST server
 application written in Java (version 11) using spring boot framework.
 
+## mailtrap
+application supports sending emails for user creation, forgetting passwords, etc. All emails are sent to mailtrap (mailtrap.io) . Mailtrap uses google account subotrica@gmail.com, password: SubotricaHakaton2017 .
+
 ## requests and responses
 
 pm server uses http(s) protocol for requests. Responses of API methods are represented as objects in JSON
