@@ -1,0 +1,88 @@
+
+### login
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "email": "bvujicic@gmail.com",
+  "password": "26N64AcWYszk"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+  %}
+
+
+### login user
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "email": "branimir.vujicic.uva@gmail.com",
+  "password": "test"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+  %}
+
+
+###  project comments
+GET  http://localhost:8080/api/project/44/comment
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### create comment with parent
+POST http://localhost:8080/api/project/44/comment
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "parentId": 10002,
+  "text": "comment text : should inherit mentions"
+}
+
+###  project comment 10002
+GET  http://localhost:8080/api/project/44/comment
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+###  notification
+GET  http://localhost:8080/api/notification?order=ASC&sort=updatedOn&size=100
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+###  project comment 10002
+GET  http://localhost:8080/api/project/44/comment/10002
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+###  project comments 10002 reactions
+GET  http://localhost:8080/api/project/44/comment/10002/reaction
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+###  project comments 10002 reaction 10001
+GET  http://localhost:8080/api/project/44/comment/10002/reaction/10001
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+###  post project comments
+POST http://localhost:8080/api/project/44/comment/10002/reaction
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "text": ":scream:"
+}
+
+###  delete project comments 10002 reaction 10001
+DELETE http://localhost:8080/api/project/44/comment/10002/reaction/10001
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+###

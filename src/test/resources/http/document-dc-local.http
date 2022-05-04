@@ -1,0 +1,175 @@
+
+
+### login
+POST http://localhost:6868/login
+Content-Type: application/json
+
+{
+	"email": "bvujicic@gmail.com",
+	"password": "26N64AcWYszk"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+  %}
+
+###
+
+
+
+
+### list all projects
+GET  http://localhost:6868/api/project
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### get one project
+GET  http://localhost:6868/api/project/44
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### get one project
+GET  http://localhost:6868/api/project/44/document
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+###
+
+###
+###
+#
+
+POST http://localhost:6868/api/project/44/document
+Authorization: Bearer {{accessToken}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="document"
+Content-Type: application/json
+
+{
+  "name": "test document",
+  "type": "FILE",
+  "source": "COMPUTER"
+}
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="download.jpg"
+Content-Type: image/jpeg
+
+< /home/bane/Pictures/download.jpg
+--WebAppBoundary--
+
+###
+
+
+
+### get single document
+GET  http://localhost:6868/api/project/44/document/53
+Authorization: Bearer {{accessToken}}
+
+
+### download document
+GET  http://localhost:6868/api/project/44/document/53/download
+Authorization: Bearer {{accessToken}}
+
+<> ~/home/bane
+
+###
+
+# curl -X GET --location "http://localhost:6868/api/project/44/document/62/download" -H "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidnVqaWNpY0BnbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiIsIlVTRVIiXSwicmlnaHRzIjpbXSwiaWF0IjoxNjM3MTg5MTAwLCJleHAiOjE2MzcyNzU1MDB9.sFfb1ToiCud3NwgcOGVKDsb608cbfIhkmT8AkXvF4xUBBcxQRc_CXVKkEoRnvpisbF7HCCj7wjI4xfcsAxSb9Q" -- output ~/home/bane/tmp
+###
+
+
+###
+
+GET http://localhost:6868/api/test/project/search?title=development&sort=id
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+###
+
+POST http://localhost:6868/api/project
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "description": "New project desc",
+  "title": "New project name"
+}
+
+
+###
+
+POST http://localhost:6868/api/project
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+
+{
+  "title": "asd",
+  "description": "asd",
+  "organizerIds": [
+    1
+  ],
+  "memberIds": [
+    24
+  ],
+  "tagIds": [
+    4
+  ],
+  "date": "2021-12-08"
+}
+
+###
+
+
+
+### get project 69
+GET http://localhost:6868/api/project/49
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### update project
+PUT http://localhost:6868/api/project/49
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "description": "Project for development purposes",
+  "organizerIds": [
+    1
+  ],
+  "tagIds": [
+    4
+  ],
+  "title": "Development Project"
+}
+
+
+### update project
+PUT http://localhost:6868/api/project/49/archive
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "Research and Development",
+  "description": "Development and Research",
+  "organizerIds": [
+    1
+  ],
+  "memberIds": [24, 1],
+  "tagIds": [
+    4,
+    5
+  ]
+}
+
+
+###

@@ -1,0 +1,626 @@
+### login
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "email": "bvujicic@gmail.com",
+  "password": "26N64AcWYszk"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+  %}
+
+
+### login user
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "email": "branimir.vujicic.uva@gmail.com",
+  "password": "test"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+  %}
+
+
+### user disable
+PUT http://localhost:8080/api/user/26/disable
+Authorization: Bearer {{accessToken}}
+
+### 404 error
+GET  http://localhost:8080/api/project/tag/setup/zzs
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### list all projects
+GET  http://localhost:8080/api/project?size=3
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+
+
+### get  project 44
+GET  http://localhost:8080/api/project/44
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### SETUP CHECK
+GET  http://localhost:8080/setup/check
+Accept: application/json
+
+### SETUP CREATE
+POST http://localhost:6868/setup
+Content-Type: application/json
+
+{
+  "name": "Branimir Vujicic",
+  "email": "branimir.vujicic.uva+1s11@gmail.com",
+  "password": "testtest"
+}
+
+### login user
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "email": "branimir.vujicic.uva+111@gmail.com",
+  "password": "testtest"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+  %}
+
+
+### get  project 44 documents
+GET  http://localhost:8080/api/project/44/document
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+
+### download document
+GET  http://localhost:8080/api/project/44/document/10001/download
+Authorization: Bearer {{accessToken}}
+
+<> ~/home/bane
+
+
+### get  project 44 comments
+GET  http://localhost:8080/api/project/44/comment
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### get  project 44 comment 10003
+GET  http://localhost:8080/api/project/44/comment/10001
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### add project comment
+POST http://localhost:8080/api/project/44/comment
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "test comment 03",
+  "text": "test comment 03 for Project for development purposes for @branimir.vujicic.uva@gmail.com, @bvujicic@gmail.com"
+}
+
+
+
+### update comment
+PUT http://localhost:8080/api/project/44/comment/10003
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "test comment 03",
+  "text": "test comment 03 for Project for development purposes branimir.vujicic.uva@gmail.com"
+}
+
+###
+POST https://localhost:7043/1.0/form/template/add
+access_token: 000000017fffffff180576c77d9640003kwtX1bjwAX1K3UV
+Content-Type: application/json
+
+{
+  "requestParams": {
+    "ping": "pong",
+    "name": "ping pong form",
+    "comment": "comment",
+    "uuid": "aa021431-6448-461e-80ef-40d9bf17fd46"
+  },
+  "formData": {
+    "name": "form"
+  }
+}
+
+###
+
+
+
+
+### delete project
+DELETE http://localhost:8080/api/project/44/comment/10001
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+
+### list all tags
+GET  http://localhost:8080/api/project/tag?name=dev
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### get one tag
+GET  http://localhost:8080/api/project/tag/5
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### erroor response
+GET  http://localhost:8080/api/project/tag/ZZZZZZZ
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### erroor response
+GET  http://localhost:8080/api/project/tag/12345
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### get tag by id
+GET  http://localhost:8080/api/project/tag/5
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### add tag
+POST http://localhost:8080/api/project/tag
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "color": "#b7b1dd",
+  "name": "glasanje"
+}
+
+###
+#   response :
+#
+#   {
+#     "id": 25,
+#     "name": "Development",
+#     "color": "red"
+#   }
+
+### add tag
+POST http://localhost:8080/api/project/tag
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "Meeting",
+  "color": "green"
+}
+
+
+### update tag
+PUT http://localhost:8080/api/project/tag/4
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "Glasanje"
+}
+
+
+### list all projects sort=id
+GET  http://localhost:8080/api/project?sort=updatedOn&order=ASC
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### list all projects sort=id
+GET  http://localhost:8080/api/project?sort=id&order=ASC
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### list all projects
+GET  http://localhost:8080/api/project?sort=description
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### list all projects
+GET  http://localhost:8080/api/project?sort=description,asc&sort=date,asc
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### get one project
+GET  http://localhost:8080/api/project/27
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+###
+#{
+#	"id": 1,
+#	"name": "management",
+#	"active": true
+#}
+
+###
+
+### erroor response
+GET  http://localhost:8080/api/project/ZZZZZZZ
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### erroor response
+GET  http://localhost:8080/api/project/12345
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### get project by id
+GET  http://localhost:8080/api/project/33
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### add project
+POST http://localhost:8080/api/project
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "Development Project",
+  "description": "Project for development purposes",
+  "organizerIds": [
+    1,
+    24
+  ],
+  "memberIds": [
+    25,
+    26
+  ],
+  "tagIds": [
+    4
+  ]
+}
+
+
+### add project
+POST http://localhost:8080/api/project
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "Important Project",
+  "description": "description",
+  "organizerIds": [
+    24,
+    1
+  ],
+  "memberIds": [
+    25,
+    24,
+    1
+  ],
+  "tagIds": [
+    4
+  ],
+  "date": "2021-12-01",
+  "timeFrom": "11:00:00",
+  "timeTo": "13:00:00"
+}
+
+### response
+#{
+#	"id": 13,
+#	"name": "Development",
+#	"active": true
+#}
+
+###
+
+
+
+
+### add project
+POST http://localhost:8080/api/project
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "Research Project",
+  "description": "Project for Research purposes",
+  "date": "2021-10-31",
+  "timeFrom": "16:00:00",
+  "timeTo": "17:00:00",
+  "organizerIds": [
+    1
+  ],
+  "memberIds": [
+    24,
+    25
+  ],
+  "tagIds": [
+    4,
+    5
+  ]
+}
+
+
+
+### delete project
+DELETE http://localhost:8080/api/project/49
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### update project
+PUT http://localhost:8080/api/project/49
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "Research and Development"
+}
+
+
+
+### update project
+PUT http://localhost:8080/api/project/10015
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "Budžet Opštine",
+  "description": "asd",
+  "archived": false,
+  "date": "2021-11-16",
+  "timeFrom": "15:00:00",
+  "timeTo": "16:00:00",
+  "members": [
+    24
+  ],
+  "organizerIds": [
+    1
+  ],
+  "documents": [],
+  "remainders": [],
+  "tagIds": [
+    4
+  ]
+}
+
+###
+
+#{date: "2022-01-13"
+#  description: "Opis"
+#  timeFrom: "15:00:00"
+#  timeTo: "16:00:00"
+#  title: "Projekat Bez Datuma"
+#}
+
+
+### list projects
+GET  http://localhost:8080/api/project?year=2022&month=1&day=14
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### list projects
+GET  http://localhost:8080/api/project?sort=date&order=ASC
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### list projects
+GET  http://localhost:8080/api/project
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### list project order by favorite
+GET  http://localhost:8080/api/project?sort=favorite&order=DESC&size=2
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### list project remainders
+GET http://localhost:8080/api/project/49/remainder
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+
+
+### list project remainders with filters
+GET http://localhost:8080/api/project/49/remainder
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+
+
+### create project remainder
+POST http://localhost:8080/api/project/10027/remainder
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "startDate": "2022-02-10",
+  "time": "14:20:00",
+  "repeatType": "NONE",
+  "channels": [
+    "EPROTOCOL",
+    "EMAIL"
+  ]
+}
+
+### delete remainder
+DELETE  http://localhost:8080/api/project/44/remainder/10006
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### create notification
+POST http://localhost:8080/api/notification
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "subject": "project 44 notification xx",
+  "text": "project 44 notification TEXT xx",
+  "userIds": [
+    1,
+    24
+  ],
+  "projectId": 44
+}
+
+
+### create project with remainders
+POST http://localhost:8080/api/project
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "Important Project with remainders",
+  "description": "description",
+  "organizerIds": [
+    24,
+    1
+  ],
+  "memberIds": [
+    24,
+    1
+  ],
+  "tagIds": [
+    4
+  ],
+  "date": "2021-12-01",
+  "timeFrom": "11:00:00",
+  "timeTo": "13:00:00",
+  "remainders": [
+    {
+      "projectId": null,
+      "startDate": "2022-01-22",
+      "time": "16:00:00",
+      "channels": [
+        "EPROTOCOL",
+        "EMAIL"
+      ]
+    },
+    {
+      "projectId": null,
+      "startDate": "2022-02-22",
+      "time": "16:00:00",
+      "channels": [
+        "EPROTOCOL",
+        "EMAIL"
+      ]
+    }
+  ]
+}
+
+### list notifications
+GET http://localhost:8080/api/notification?ssubject=Project
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### list notifications with filter subject
+GET http://localhost:8080/api/notification?subject=2022
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### list notifications - sort by read
+GET http://localhost:8080/api/notification?read=true&sort=read&order=ASC
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### count notifications - sort by read
+GET http://localhost:6868/api/notification/count
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### mark notification as read
+PUT http://localhost:8080/api/notification/7/markAsRead
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### mark notification as read
+PUT http://localhost:8080/api/notification/7/markAsUnread
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+
+
+### add project to favorites
+PUT http://localhost:8080/api/project/10025/favorite/add
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### remove project from favorites
+PUT http://localhost:8080/api/project/10025/favorite/remove
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+
+###  get project 10025
+GET http://localhost:8080/api/project/10025
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+
+###  get projects
+GET http://localhost:8080/api/project
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+
+###
+
+
+

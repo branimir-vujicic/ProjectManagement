@@ -1,0 +1,154 @@
+
+
+### login
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "email": "bvujicic@gmail.com",
+  "password": "26N64AcWYszk"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+  %}
+
+###
+
+
+
+
+### list all projects
+GET  http://localhost:8080/api/project
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### get one project
+GET  http://localhost:8080/api/project/49
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+
+### update project
+PUT http://localhost:8080/api/project/49
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "id": 49,
+  "title": "proj",
+  "description": "desc xxx 0001",
+  "archived": false,
+  "memberIds": [24, 1],
+  "organizerIds": [1],
+  "documents": [],
+  "remainders": [],
+  "tagIds": [4, 5],
+  "date": "2022-01-14"
+}
+
+
+### update project
+PUT http://localhost:8080/api/project/49
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "Test 123",
+  "description": "test",
+  "organizerIds": [
+    1
+  ],
+  "memberIds": [
+    24
+  ],
+  "tagIds": [
+    4
+  ],
+  "date": "2022-01-14"
+}
+
+###  project documents
+GET  http://localhost:8080/api/project/44/document
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+###  project comments
+GET  http://localhost:8080/api/project/44/comment
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### upload document /home/bane/Pictures/download.jpg
+POST http://localhost:8080/api/project/44/document
+Authorization: Bearer {{accessToken}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="document"
+Content-Type: application/json
+
+{
+  "name": "test document",
+  "type": "FILE",
+  "source": "COMPUTER"
+}
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="download.jpg"
+Content-Type: image/jpeg
+
+< /home/bane/Pictures/download.jpg
+--WebAppBoundary--
+
+###
+
+
+
+### get single document
+GET  http://localhost:8080/api/project/44/document
+Authorization: Bearer {{accessToken}}
+
+
+### download document 10000
+GET  http://localhost:8080/download/10000
+
+<> ~/home/bane
+
+
+### download document
+GET  http://localhost:8080/api/project/44/document/10000/download
+Authorization: Bearer {{accessToken}}
+
+<> ~/home/bane
+
+###
+
+# curl -X GET --location "http://localhost:8080/api/project/44/document/53/download" -H "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidnVqaWNpY0BnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iXSwicmlnaHRzIjpbXSwiaWF0IjoxNjM3Njc1MDgwLCJleHAiOjE2Mzc3NjE0ODB9.PlNWFPeDQLQ7XpkDAfyWIHbRpPe6aNBEUHYDCojNlZofie2y7kRiMegTZCUnUmpKjOkRm0AmUTr9hAoL4Q_zrA" -- output ~/home/bane/tmp
+###
+
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidnVqaWNpY0BnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iXSwicmlnaHRzIjpbXSwiaWF0IjoxNjM3Njc1MDgwLCJleHAiOjE2Mzc3NjE0ODB9.PlNWFPeDQLQ7XpkDAfyWIHbRpPe6aNBEUHYDCojNlZofie2y7kRiMegTZCUnUmpKjOkRm0AmUTr9hAoL4Q_zrA
+
+
+
+####
+GET https://www.google.com
+
+### update project
+PUT http://localhost:8080/api/project/49
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "description": "Project for development purposes XCVVV",
+  "organizerIds": [
+    1
+  ],
+  "tagIds": [
+    4
+  ],
+  "title": "Development Project XX"
+}

@@ -1,0 +1,27 @@
+package rs.ac.su.vts.pm.projectmanagement.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.stereotype.Repository;
+import rs.ac.su.vts.pm.projectmanagement.model.entity.User;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface UserRepository
+        extends JpaRepository<User, Long>, QuerydslPredicateExecutor<User>
+{
+
+    User findOneByEmail(String email);
+
+    User findOneById(long id);
+
+    Optional<User> findByEmailAndDeletedIsFalse(String username);
+
+    Optional<User> getByEmailAndActiveIsTrue(String email);
+
+    List<User> findAllByProjectMembersProjectId(Long projectId);
+
+    List<User> findAllByProjectOrganizersProjectId(Long projectId);
+}

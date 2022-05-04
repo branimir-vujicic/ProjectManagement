@@ -1,0 +1,85 @@
+### login
+POST http://localhost:6868/login
+Content-Type: application/json
+
+{
+	"email": "bvujicic@gmail.com",
+	"password": "26N64AcWYszk"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+  %}
+
+### current logged user
+GET  http://localhost:6868/api/user/me
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### list all users
+GET  http://localhost:6868/api/user
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### get all projects
+GET http://localhost:6868/api/project
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### add user
+POST http://localhost:6868/api/user
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "Robin Hud",
+  "email": "Robin.Hud+1@gmail.com",
+  "unitName": "a",
+  "positionName": "a",
+  "roles": [
+    "USER"
+  ]
+}
+
+### @name create password
+// https://localhost/verify-email?key=b0599158-9c88-4d23-afd7-282d435afb44&email=branimir.vujicic.uva+12@gmail.com
+PUT http://localhost:6868/api/user/create-password
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "Robin.Hud+1@gmail.com",
+  "key": "8a57402d-b586-4b14-8dc4-a16e1a29ccc7",
+  "password": "test",
+  "confirmedPassword": "test"
+}
+
+
+### update user
+PUT http://localhost:6868/api/user/10012
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "Robin Hud xxx",
+  "unitName": "a",
+  "positionName": "a",
+  "roles": [
+    "USER"
+  ]
+}
+
+
+
+
+
+
+
+
+
+
+
+

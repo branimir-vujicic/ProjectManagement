@@ -1,0 +1,284 @@
+
+
+#### https://eprotokol-api-staging.herokuapp.com/
+
+GET https://eprotokol-api-staging.herokuapp.com/api/
+
+
+####
+GET https://eprotokol-api-staging.herokuapp.com/v3/api-docs
+Accept: application/json
+
+###
+
+### login
+
+POST https://eprotokol-api-staging.herokuapp.com/login
+Content-Type: application/json
+
+{
+  "email": "bvujicic@gmail.com",
+  "password": "26N64AcWYszk"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+  %}
+
+
+###
+
+
+###
+
+####
+GET https://eprotokol-api-staging.herokuapp.com/v3/api-docs
+Accept: application/json
+
+
+###
+GET https://eprotokol-api-staging.herokuapp.com/swagger-ui.html
+
+###
+POST https://eprotokol-api-staging.herokuapp.com/login
+Content-Type: application/json
+
+{
+  "email": "bvujicic@gmail.com",
+  "password": "26N64AcWYszk"
+}
+
+
+###
+POST https://eprotokol-api-staging.herokuapp.com/login
+Content-Type: application/json
+
+{
+  "email": "bvujicic@gmail.com",
+  "password": "26N64AcWYszk"
+}
+
+
+### login
+POST https://eprotokol-api-staging.herokuapp.com/login
+Content-Type: application/json
+
+{
+  "email": "branimir.vujicic.uva@gmail.com",
+  "password": "test"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+  %}
+
+
+### login
+POST https://eprotokol-api-staging.herokuapp.com/login
+Content-Type: application/json
+
+{
+  "email": "bvujicic@gmail.com",
+  "password": "26N64AcWYszk"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+  %}
+
+### current logged user
+GET  https://eprotokol-api-staging.herokuapp.com/api/user/me
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### list all users
+GET  https://eprotokol-api-staging.herokuapp.com/api/user
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### list users by name
+GET  https://eprotokol-api-staging.herokuapp.com/api/user?name=bane
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### list all units
+GET  https://eprotokol-api-staging.herokuapp.com/api/unit
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### get one unit
+GET  https://eprotokol-api-staging.herokuapp.com/api/unit/1
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+###
+#{
+#	"id": 1,
+#	"name": "management",
+#	"active": true
+#}
+
+###
+
+### erroor response
+GET  https://eprotokol-api-staging.herokuapp.com/api/unit/ZZZZZZZ
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### erroor response
+GET  https://eprotokol-api-staging.herokuapp.com/api/unit/12345
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### get unit by id
+GET  https://eprotokol-api-staging.herokuapp.com/api/unit/13
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### add unit
+POST https://eprotokol-api-staging.herokuapp.com/api/unit
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "Development"
+}
+
+### response
+#{
+#	"id": 13,
+#	"name": "Development",
+#	"active": true
+#}
+
+###
+
+
+### update unit
+PUT https://eprotokol-api-staging.herokuapp.com/api/unit/13
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "Research and Development"
+}
+
+
+
+###
+GET  https://eprotokol-api-staging.herokuapp.com/api/position
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### add position
+POST https://eprotokol-api-staging.herokuapp.com/api/position
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "Director"
+}
+
+
+### update position
+PUT https://eprotokol-api-staging.herokuapp.com/api/position/11
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "CTOz2"
+}
+
+###
+GET https://eprotokol-api-staging.herokuapp.com/api/user
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### add user
+# unit "id": 13, "name": "Research and Development"
+# position "id": 11, "name": "CTOz2"
+
+POST https://eprotokol-api-staging.herokuapp.com/api/user
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "Branimir Vujicic",
+  "email": "branimir.vujicic.uva@gmail.com",
+  "unitId": 13,
+  "positionId": 11,
+  "roles": [
+    "USER"
+  ]
+}
+
+###
+
+# Create password using following link https://localhost/verify-email?key=ae5af2eb-6d8f-44cd-b4a3-dbc32b5644fe&email=branimir.vujicic.uva@gmail.com link expires at 25.10.2021 01:44:11 .
+
+
+###
+PUT https://eprotokol-api-staging.herokuapp.com/api/user/create-password
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "branimir.vujicic.uva@gmail.com",
+  "key": "ae5af2eb-6d8f-44cd-b4a3-dbc32b5644fe",
+  "password": "test",
+  "confirmedPassword": "test"
+}
+
+###
+PUT https://eprotokol-api-staging.herokuapp.com/api/user/update-password/24
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "branimir.vujicic.uva@gmail.com",
+  "oldPassword": "test",
+  "password": "test1",
+  "confirmedPassword": "test1"
+}
+
+###
+
+
+###
+POST https://eprotokol-api-staging.herokuapp.com/login
+Content-Type: application/json
+
+{
+  "email": "branimir.vujicic.uva@gmail.com",
+  "password": "test"
+}
+
+
+###
+
+
+###
+PUT https://eprotokol-api-staging.herokuapp.com/api/user/forgot-password
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "branimir.vujicic.uva@gmail.com"
+}
+
+###\

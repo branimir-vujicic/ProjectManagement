@@ -1,0 +1,293 @@
+####
+GET http://localhost:8080/v3/api-docs
+Accept: application/json
+
+
+###
+GET http://localhost:8080/swagger-ui.html
+
+###
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+	"email": "bvujicic@gmail.com",
+	"password": "26N64AcWYszk"
+}
+
+
+###
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+	"email": "bvujicic@gmail.com",
+	"password": "26N64AcWYszk"
+}
+
+
+### login
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+	"email": "branimir.vujicic.uva+12@gmail.com",
+	"password": "test"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+  %}
+
+
+### login
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+	"email": "bvujicic@gmail.com",
+	"password": "26N64AcWYszk"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+  %}
+
+### refresh token
+GET  http://localhost:8080/schedulers
+Accept: application/json
+
+### refresh token
+GET  http://localhost:8080/refresh-token
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### refresh token
+GET  http://localhost:8080/refresh-token
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidnVqaWNpY0BnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iXSwicmlnaHRzIjpbXSwiaWF0IjoxNjQzODc1MTI4LCJleHAiOjE2NDM5NjE1Mjh9.9Vw2bKNmDetK-L46QcYn6dqcxyZeqHT7Rf1sVq3TL96NQ1i2RQyCA5WAj3wjuiU_VpO3hWO1ZZGTAn6I0r397Q
+
+### current logged user
+GET  http://localhost:8080/api/user/me
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### delete user 10006
+DELETE  http://localhost:8080/api/user/10006
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### list all users
+GET  http://localhost:8080/api/user?active=all
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### get user 1
+GET  http://localhost:8080/api/user/auth/1
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### list users by name
+GET  http://localhost:8080/api/user?name=bane
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### list all units
+GET  http://localhost:8080/api/unit
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### get one unit
+GET  http://localhost:8080/api/unit/1
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+###
+#{
+#	"id": 1,
+#	"name": "management",
+#	"active": true
+#}
+
+###
+
+### erroor response
+GET  http://localhost:8080/api/unit/ZZZZZZZ
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### erroor response
+GET  http://localhost:8080/api/unit/12345
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### get unit by id
+GET  http://localhost:8080/api/unit/13
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### add unit
+POST http://localhost:8080/api/unit
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+	"name": "Development"
+}
+
+### response
+#{
+#	"id": 13,
+#	"name": "Development",
+#	"active": true
+#}
+
+###
+
+
+### update unit
+PUT http://localhost:8080/api/unit/13
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+	"name": "Research and Development"
+}
+
+
+
+###
+GET  http://localhost:8080/api/position
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### add position
+POST http://localhost:8080/api/position
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+	"name": "Director"
+}
+
+
+### update position
+PUT http://localhost:8080/api/position/11
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+	"name": "CTOz2"
+}
+
+###
+GET http://localhost:8080/api/user
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### add user
+# unit "id": 13, "name": "Research and Development"
+# position "id": 11, "name": "CTOz2"
+
+POST http://localhost:8080/api/user
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+	"name": "Branimir Vujicic",
+	"email": "branimir.vujicic.uva+111@gmail.com",
+	"unitId": 13,
+	"positionId": 11,
+	"roles": [
+		"USER"
+	]
+}
+
+###
+
+# Create password using following link https://localhost/verify-email?key=ae5af2eb-6d8f-44cd-b4a3-dbc32b5644fe&email=branimir.vujicic.uva@gmail.com link expires at 25.10.2021 01:44:11 .
+
+
+###
+PUT http://localhost:8080/api/user/create-password
+Accept: application/json
+Content-Type: application/json
+
+{
+	"email": "branimir.vujicic.uva@gmail.com",
+	"key": "ae5af2eb-6d8f-44cd-b4a3-dbc32b5644fe",
+	"password": "test",
+	"confirmedPassword": "test"
+}
+
+###
+PUT http://localhost:8080/api/user/update-password/24
+Accept: application/json
+Content-Type: application/json
+
+{
+	"email": "branimir.vujicic.uva@gmail.com",
+	"oldPassword": "test",
+	"password": "test1",
+	"confirmedPassword": "test1"
+}
+
+###
+
+
+###
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+	"email": "branimir.vujicic.uva@gmail.com",
+	"password": "test"
+}
+
+
+###
+
+
+###
+PUT http://localhost:8080/api/user/forgot-password
+Accept: application/json
+Content-Type: application/json
+
+{
+	"email": "branimir.vujicic.uva@gmail.com"
+}
+
+
+### list all tags
+GET  http://localhost:8080/api/project/tag
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### list all projects
+GET  http://localhost:8080/api/project
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
+
+### get non existing project projects
+GET  http://localhost:8080/api/project/zzzz
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
