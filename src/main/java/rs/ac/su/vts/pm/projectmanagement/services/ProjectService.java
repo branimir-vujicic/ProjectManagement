@@ -13,11 +13,7 @@ import rs.ac.su.vts.pm.projectmanagement.model.dto.project.ProjectCreateRequest;
 import rs.ac.su.vts.pm.projectmanagement.model.dto.project.ProjectListRequest;
 import rs.ac.su.vts.pm.projectmanagement.model.dto.project.ProjectMapper;
 import rs.ac.su.vts.pm.projectmanagement.model.dto.project.ProjectUpdateRequest;
-import rs.ac.su.vts.pm.projectmanagement.model.entity.Project;
-import rs.ac.su.vts.pm.projectmanagement.model.entity.ProjectMember;
-import rs.ac.su.vts.pm.projectmanagement.model.entity.ProjectOrganizer;
-import rs.ac.su.vts.pm.projectmanagement.model.entity.Tag;
-import rs.ac.su.vts.pm.projectmanagement.model.entity.User;
+import rs.ac.su.vts.pm.projectmanagement.model.entity.*;
 import rs.ac.su.vts.pm.projectmanagement.repository.ProjectMemberRepository;
 import rs.ac.su.vts.pm.projectmanagement.repository.ProjectOrganizerRepository;
 import rs.ac.su.vts.pm.projectmanagement.repository.ProjectRepository;
@@ -29,12 +25,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.lang.String.format;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class ProjectService
-{
+public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final UserService userService;
@@ -43,26 +40,22 @@ public class ProjectService
     private final ProjectOrganizerRepository projectOrganizerRepository;
     private final UserRepository userRepository;
 
-    public Project getProjectById(Long id)
-    {
-        return projectRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Project not found: %s", id)));
+    public Project getProjectById(Long id) {
+        return projectRepository.findById(id).orElseThrow(() -> new NotFoundException(format("Project not found: %s", id)));
     }
 
-    public Page<Project> listProjects(ProjectListRequest request)
-    {
+    public Page<Project> listProjects(ProjectListRequest request) {
         BooleanBuilder predicate = request.predicate();
         return projectRepository.findAll(predicate, request.pageable());
     }
 
-    public Long countProjects(ProjectListRequest request)
-    {
+    public Long countProjects(ProjectListRequest request) {
         BooleanBuilder predicate = request.predicate();
         return projectRepository.count(predicate);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Project updateProject(Project project, ProjectUpdateRequest request)
-    {
+    public Project updateProject(Project project, ProjectUpdateRequest request) {
         boolean shouldUpdate = shouldUpdate(project, request);
         if (!shouldUpdate) {
             return project;
@@ -82,8 +75,7 @@ public class ProjectService
         return projectRepository.save(project);
     }
 
-    private boolean shouldUpdate(Project project, ProjectUpdateRequest request)
-    {
+    private boolean shouldUpdate(Project project, ProjectUpdateRequest request) {
         //meta
         boolean metaSame = Objects.equals(project.getTitle(), request.getTitle()) &&
                 Objects.equals(project.getDescription(), request.getDescription()) &&
@@ -93,8 +85,7 @@ public class ProjectService
         return !(metaSame);
     }
 
-    public Project createProject(ProjectCreateRequest request)
-    {
+    public Project createProject(ProjectCreateRequest request) {
         if (projectRepository.existsByTitle(request.getTitle())) {
             throw new ProjectExistsException();
         }
@@ -120,15 +111,13 @@ public class ProjectService
         return projectRepository.save(project);
     }
 
-    public void deleteProject(Long id, User user)
-    {
+    public void deleteProject(Long id, User user) {
         Project project = getProjectById(id);
         project.setDeleted(true);
         projectRepository.save(project);
     }
 
-    public void undeleteProject(Long id, User user)
-    {
+    public void undeleteProject(Long id, User user) {
         Project project = getProjectById(id);
         if (!project.isDeleted()) {
             return;
@@ -137,8 +126,7 @@ public class ProjectService
         projectRepository.save(project);
     }
 
-    public void leaveProject(Long id, User user)
-    {
+    public void leaveProject(Long id, User user) {
         user = userService.getUserById(user.getId());
         Project project = getProjectById(id);
         removeMember(project, user.getId(), false);
@@ -148,24 +136,21 @@ public class ProjectService
         projectRepository.save(project);
     }
 
-    public void addToFavorites(Long projectId, User loggedUser)
-    {
+    public void addToFavorites(Long projectId, User loggedUser) {
         Project project = getProjectById(projectId);
         User user = userService.getUserById(loggedUser.getId());
         user.addProject(project);
         userRepository.save(user);
     }
 
-    public void removeFavorite(Long projectId, User loggedUser)
-    {
+    public void removeFavorite(Long projectId, User loggedUser) {
         Project project = getProjectById(projectId);
         User user = userService.getUserById(loggedUser.getId());
         user.removeProject(project);
         userRepository.save(user);
     }
 
-    public void addTag(Project project, Long tagId)
-    {
+    public void addTag(Project project, Long tagId) {
         Tag tag = tagService.getTagById(tagId);
         if (project.getTags().contains(tag)) {
             return;
@@ -174,8 +159,7 @@ public class ProjectService
         projectRepository.save(project);
     }
 
-    public void removeTag(Project project, Long tagId)
-    {
+    public void removeTag(Project project, Long tagId) {
         Tag tag = tagService.getTagById(tagId);
         if (!project.getTags().contains(tag)) {
             return;
@@ -184,8 +168,7 @@ public class ProjectService
         projectRepository.save(project);
     }
 
-    public void addMember(Project project, Long userId)
-    {
+    public void addMember(Project project, Long userId) {
         User user = userService.getUserById(userId);
         if (!user.isActive() || user.isDeleted()) {
             return;
@@ -198,8 +181,7 @@ public class ProjectService
         projectRepository.save(project);
     }
 
-    public void removeMember(Project project, Long userId, boolean logEvent)
-    {
+    public void removeMember(Project project, Long userId, boolean logEvent) {
         User user = userService.getUserById(userId);
         if (!project.getMembers().contains(user)) {
             return;
@@ -213,8 +195,7 @@ public class ProjectService
         projectRepository.save(project);
     }
 
-    public void addOrganizer(Project project, Long userId)
-    {
+    public void addOrganizer(Project project, Long userId) {
         User user = userService.getUserById(userId);
         if (!user.isActive() || user.isDeleted()) {
             return;
@@ -227,8 +208,7 @@ public class ProjectService
         projectRepository.save(project);
     }
 
-    public void removeOrganizer(Project project, Long userId, boolean logEvent)
-    {
+    public void removeOrganizer(Project project, Long userId, boolean logEvent) {
         User user = userService.getUserById(userId);
         if (!project.getOrganizers().contains(user)) {
             return;

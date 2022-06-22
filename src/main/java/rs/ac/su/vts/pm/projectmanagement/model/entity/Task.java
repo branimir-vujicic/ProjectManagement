@@ -1,22 +1,10 @@
 package rs.ac.su.vts.pm.projectmanagement.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import rs.ac.su.vts.pm.projectmanagement.model.base.BaseEntity;
 import rs.ac.su.vts.pm.projectmanagement.model.common.Status;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -30,8 +18,7 @@ import java.util.StringJoiner;
 @Table(name = "task")
 @Entity(name = "task")
 public class Task
-        extends BaseEntity
-{
+        extends BaseEntity {
 
     private LocalDateTime time;
 
@@ -58,8 +45,7 @@ public class Task
 
     // region hash code, equals, to string
     @Override
-    public boolean equals(final Object o)
-    {
+    public boolean equals(final Object o) {
         if (o == this) {
             return true;
         }
@@ -71,14 +57,12 @@ public class Task
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return 1;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return new StringJoiner(", ", Task.class.getSimpleName() + "[", "]")
                 .add("id='" + getId() + "'")
                 .toString();

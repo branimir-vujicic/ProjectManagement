@@ -9,11 +9,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.util.CollectionUtils;
+import rs.ac.su.vts.pm.projectmanagement.model.common.Status;
 import rs.ac.su.vts.pm.projectmanagement.model.dto.PageableFilter;
 import rs.ac.su.vts.pm.projectmanagement.model.entity.QTask;
 
 import java.util.List;
 import java.util.Objects;
+
+import static java.util.Objects.nonNull;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -31,6 +35,8 @@ public class TaskListRequest
     private List<Long> userIds;
     @Schema(description = "Project id")
     private Long projectId;
+    @Schema(description = "Task Status")
+    private Status status;
     @Schema(description = "should include deleted items")
     @Builder.Default
     private Boolean includeDeleted = false;
@@ -42,13 +48,16 @@ public class TaskListRequest
         BooleanBuilder predicate = new BooleanBuilder();
         final var task = QTask.task;
 
-        if (!CollectionUtils.isEmpty(ids)) {
+        if (!isEmpty(ids)) {
             predicate.and(task.id.in(ids));
         }
-        if (Objects.nonNull(projectId)) {
+        if (nonNull(projectId)) {
             predicate.and(task.project.id.eq(projectId));
         }
-        if (!CollectionUtils.isEmpty(userIds)) {
+        if (nonNull(status)) {
+            predicate.and(task.status.eq(status));
+        }
+        if (!isEmpty(userIds)) {
             predicate.and(task.user.id.in(userIds));
         }
         if (includeDeleted == null || !includeDeleted) {

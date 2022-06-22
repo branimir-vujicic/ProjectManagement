@@ -11,38 +11,21 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import rs.ac.su.vts.pm.projectmanagement.exception.InvalidPasswordException;
-import rs.ac.su.vts.pm.projectmanagement.exception.NotAuthorizedException;
-import rs.ac.su.vts.pm.projectmanagement.exception.NotFoundException;
-import rs.ac.su.vts.pm.projectmanagement.exception.PasswordsDoesntException;
-import rs.ac.su.vts.pm.projectmanagement.exception.UsernameExistsException;
-import rs.ac.su.vts.pm.projectmanagement.exception.ValidationException;
+import rs.ac.su.vts.pm.projectmanagement.exception.*;
 import rs.ac.su.vts.pm.projectmanagement.model.common.UserRole;
-import rs.ac.su.vts.pm.projectmanagement.model.dto.user.CreatePasswordRequest;
-import rs.ac.su.vts.pm.projectmanagement.model.dto.user.ForgotPasswordRequest;
-import rs.ac.su.vts.pm.projectmanagement.model.dto.user.UpdatePasswordRequest;
-import rs.ac.su.vts.pm.projectmanagement.model.dto.user.UserCreateRequest;
-import rs.ac.su.vts.pm.projectmanagement.model.dto.user.UserListRequest;
-import rs.ac.su.vts.pm.projectmanagement.model.dto.user.UserMapper;
-import rs.ac.su.vts.pm.projectmanagement.model.dto.user.UserUpdateRequest;
+import rs.ac.su.vts.pm.projectmanagement.model.dto.user.*;
 import rs.ac.su.vts.pm.projectmanagement.model.entity.User;
 import rs.ac.su.vts.pm.projectmanagement.repository.UserRepository;
 import rs.ac.su.vts.pm.projectmanagement.services.auth.ContextService;
 
 import javax.persistence.EntityManager;
 import javax.validation.Valid;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 @Slf4j
 @Transactional
-public class UserService
-{
+public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final Long recoverPasswordMaxTime;
@@ -50,22 +33,19 @@ public class UserService
     private final EntityManager entityManager;
 
     public UserService(@Value("${user.recoverPassword.maxTime}") Long recoverPasswordMaxTime,
-            UserRepository userRepository, EntityManager entityManager,
-            PasswordEncoder passwordEncoder)
-    {
+                       UserRepository userRepository, EntityManager entityManager,
+                       PasswordEncoder passwordEncoder) {
         this.recoverPasswordMaxTime = recoverPasswordMaxTime;
         this.userRepository = userRepository;
         this.entityManager = entityManager;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User getUserByUsername(String username)
-    {
+    public User getUserByUsername(String username) {
         return userRepository.findOneByEmail(username);
     }
 
-    public User getUserByUsernameRequired(String username)
-    {
+    public User getUserByUsernameRequired(String username) {
         User userByUsername = getUserByUsername(username);
         if (userByUsername == null) {
             throw new ValidationException("user does not exist");
@@ -73,8 +53,7 @@ public class UserService
         return userByUsername;
     }
 
-    public User addUser(UserCreateRequest request)
-    {
+    public User addUser(UserCreateRequest request) {
         if (getUserByUsername(request.getEmail()) != null) {
             throw new UsernameExistsException();
         }
@@ -91,8 +70,7 @@ public class UserService
         return userRepository.save(user);
     }
 
-    public User updateUser(Long id, @Valid UserUpdateRequest updateRequest)
-    {
+    public User updateUser(Long id, @Valid UserUpdateRequest updateRequest) {
         User userById = getUserById(id);
         userById.setName(updateRequest.getName());
         if (StringUtils.hasText(updateRequest.getEmail())) {
@@ -109,8 +87,7 @@ public class UserService
         return userRepository.save(userById);
     }
 
-    public void enableUser(@Valid Long id)
-    {
+    public void enableUser(@Valid Long id) {
         User user = getUserById(id);
         if (!user.isActive()) {
             user.setActive(true);
@@ -118,8 +95,7 @@ public class UserService
         }
     }
 
-    public void disableUser(@Valid Long id)
-    {
+    public void disableUser(@Valid Long id) {
         User user = getUserById(id);
         if (user.isActive()) {
             user.setActive(false);
@@ -127,8 +103,7 @@ public class UserService
         }
     }
 
-    public void deleteUser(@Valid Long id)
-    {
+    public void deleteUser(@Valid Long id) {
         User user = getUserById(id);
         Optional<User> loggedUser = ContextService.getLoggedUser();
         if (loggedUser.isPresent()) {
@@ -139,14 +114,12 @@ public class UserService
         }
     }
 
-    public Page<User> listUsers(UserListRequest request)
-    {
+    public Page<User> listUsers(UserListRequest request) {
         BooleanBuilder predicate = request.predicate();
         return userRepository.findAll(predicate, request.pageable());
     }
 
-    public void createPassword(CreatePasswordRequest createPasswordRequest)
-    {
+    public void createPassword(CreatePasswordRequest createPasswordRequest) {
         String password = createPasswordRequest.getPassword();
         String repeatPassword = createPasswordRequest.getConfirmedPassword();
         if (!Objects.equals(password, repeatPassword)) {
@@ -171,8 +144,7 @@ public class UserService
         userRepository.save(user);
     }
 
-    public void forgotPassword(ForgotPasswordRequest forgotPasswordRequest)
-    {
+    public void forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
         User user = getUserByUsernameRequired(forgotPasswordRequest.getEmail());
         String key = UUID.randomUUID().toString();
         Long passwordRecoveryTime = calculatePasswordRecoveryTime();
@@ -182,13 +154,11 @@ public class UserService
 //		mailService.sendForgotPasswordEmail(savedUser);
     }
 
-    private long calculatePasswordRecoveryTime()
-    {
+    private long calculatePasswordRecoveryTime() {
         return System.currentTimeMillis() + recoverPasswordMaxTime;
     }
 
-    public void updatePassword(UpdatePasswordRequest updatePasswordRequest)
-    {
+    public void updatePassword(UpdatePasswordRequest updatePasswordRequest) {
         User user = ContextService.getLoggedUser().orElseThrow(NotAuthorizedException::new);
         String oldPassword = updatePasswordRequest.getOldPassword();
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
@@ -203,14 +173,12 @@ public class UserService
         userRepository.save(user);
     }
 
-    public boolean userExists(Long id)
-    {
+    public boolean userExists(Long id) {
         return userRepository.findById(id).isPresent();
     }
 
     public void changePassword(String username, String oldPassword, String newPassword)
-            throws NotAuthorizedException
-    {
+            throws NotAuthorizedException {
         User user = getUserByUsernameRequired(username);
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
             throw new InvalidPasswordException("Bad password or username");
@@ -219,14 +187,12 @@ public class UserService
         userRepository.save(user);
     }
 
-    public User getUserById(Long id)
-    {
+    public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("User not found: %s", id)));
     }
 
-    public List<User> findAllFilter(boolean isDeleted)
-    {
+    public List<User> findAllFilter(boolean isDeleted) {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedUserFilter");
         filter.setParameter("isDeleted", isDeleted);
@@ -235,14 +201,19 @@ public class UserService
         return users;
     }
 
-    public List<User> listMembersByProject(Long projectId)
-    {
+    public List<User> listMembersByProject(Long projectId) {
         return userRepository.findAllByProjectMembersProjectId(projectId);
     }
 
-    public List<User> listOrganizersByProject(Long projectId)
-    {
+    public List<User> listOrganizersByProject(Long projectId) {
         return userRepository.findAllByProjectOrganizersProjectId(projectId);
+    }
+
+    public User getLoggedUser() {
+        Optional<User> optionalUser = ContextService.getLoggedUser();
+        if (optionalUser.isPresent()) {
+            return getUserByUsernameRequired(optionalUser.get().getEmail());
+        } else throw new NotFoundException("User doesn't exist!");
     }
 }
 
