@@ -285,21 +285,6 @@ public class ControllerExceptionHandler
 		return new ResponseEntity<>(ErrorResponse.builder().type(cause.getErrorType()).errorCode(cause.getErrorCode()).status(status).path(request.getRequestURI()).message(cause.getMessage()).build(), status);
 	}
 
-	/*
-	@ExceptionHandler( value = {
-			InvalidDocumentTypeException.class,
-			InvalidPasswordException.class,
-			NotAuthorizedException.class,
-			NotFoundException.class,
-			ObjectInUseException.class,
-			PasswordsDoesntException.class,
-			ProjectExistsException.class,
-			ServiceException.class,
-			UsernameExistsException.class,
-			ValidationException.class
-	})
-	*/
-
 	@ExceptionHandler(AccessDeniedException.class)
 	@ResponseBody
 	public HttpEntity<ErrorResponse> handleAccessDeniedException(HttpServletRequest request, AccessDeniedException cause)
@@ -327,19 +312,4 @@ public class ControllerExceptionHandler
 		}
 		return new ResponseEntity<>(ErrorResponse.builder().type(ErrorType.GENERAL_ERROR).errorCode(INTERNAL_ERROR).status(status).path("").message(cause.getMessage()).build(), status);
 	}
-
-/*
-	@ExceptionHandler(Exception.class)
-	@ResponseBody
-	public HttpEntity<ErrorResponse> handleUnknownException(HttpServletRequest request, ServiceException cause) {
-		log.error(ERROR_PROCESSING_REQUEST, cause);
-
-		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-		ResponseStatus responseStatus = AnnotationUtils.findAnnotation(cause.getClass(), ResponseStatus.class);
-		if (responseStatus != null) {
-			status = responseStatus.code();
-		}
-		return new ResponseEntity<>(ErrorResponse.builder().type(cause.getErrorType()).errorCode(cause.getErrorCode()).status(status).path(request.getRequestURI()).message(cause.getMessage()).build(), status);
-	}
-	*/
 }
