@@ -64,6 +64,9 @@
 
 # Attempt to set APP_HOME
 
+export JAVA_HOME=/usr/lib/jvm/openjdk-11
+export PATH=$JAVA_HOME/bin:$PATH
+
 # Resolve links: $0 may be a link
 app_path=$0
 

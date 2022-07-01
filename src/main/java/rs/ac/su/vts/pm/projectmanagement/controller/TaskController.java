@@ -78,6 +78,7 @@ public class TaskController {
     public TaskDto update(@Valid @Parameter(description = "Project id") @PathVariable("projectId") Long projectId,
                           @Parameter(description = "Task update request") @Valid @RequestBody TaskUpdateRequest taskUpdateRequest,
                           @Parameter(description = "Task id") @PathVariable("id") Long id) {
+        taskUpdateRequest.setId(id);
         return TaskMapper.INSTANCE.toDto(taskService.updateTask(taskUpdateRequest));
     }
 

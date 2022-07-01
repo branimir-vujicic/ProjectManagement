@@ -56,6 +56,12 @@ Accept: application/json
 Authorization: Bearer {{accessToken}}
 
 
+### list all projects
+GET  http://localhost:6868/api/project
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+
 ### list all tag details
 GET  http://localhost:6868/api/project/tag/details
 Accept: application/json
@@ -70,7 +76,7 @@ Authorization: Bearer {{accessToken}}
 
 {
   "color": "#b7b1dd",
-  "name": "glasanjea"
+  "name": "test"
 }
 
 
@@ -86,7 +92,6 @@ GET  http://localhost:6868/api/project?tagIds=[4,5]
 Accept: application/json
 Authorization: Bearer {{accessToken}}
 
-groupBy.toArray(new Expression[0])
 
 ### list active projects
 GET  http://localhost:6868/api/project
@@ -95,11 +100,9 @@ Authorization: Bearer {{accessToken}}
 
 
 ### get one project
-GET  http://localhost:6868/api/project/49
+GET  http://localhost:6868/api/project/3
 Accept: application/json
 Authorization: Bearer {{accessToken}}
-
-
 
 
 ### add project to favorites
@@ -131,22 +134,41 @@ Authorization: Bearer {{accessToken}}
 
 
 
-### update project
-PUT http://localhost:6868/api/project/49
+### create project
+POST http://localhost:6868/api/project/
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "id": 49,
   "title": "proj",
   "description": "desc xxx 0001",
   "archived": false,
-  "memberIds": [24, 1],
+  "memberIds": [1],
   "organizerIds": [1],
   "documents": [],
   "remainders": [],
-  "tagIds": [4, 5],
+  "tagIds": [1, 2],
+  "date": "2022-01-14"
+}
+
+
+
+### update project
+PUT http://localhost:6868/api/project/3
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "proj",
+  "description": "desc xxx 0002",
+  "archived": false,
+  "memberIds": [ 1],
+  "organizerIds": [1],
+  "documents": [],
+  "remainders": [],
+  "tagIds": [1,2],
   "date": "2022-01-14"
 }
 
@@ -198,499 +220,60 @@ Accept: application/json
 Authorization: Bearer {{accessToken}}
 
 ###  project comments
-GET  http://localhost:6868/api/project/10031/comment
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-
-###  project notifications
-GET  http://localhost:6868/api/notification
+GET  http://localhost:6868/api/project/3/comment
 Accept: application/json
 Authorization: Bearer {{accessToken}}
 
 
-
-
-
-### mark notification as read
-POST http://localhost:6868/api/notification/bulk/markAsRead
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{accessToken}}
-
-{
-  "ids":[1, 2, 3]
-}
-
-
-###  project comments
-GET  http://localhost:6868/api/project/2/comment
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-
-### create comment
-POST http://localhost:6868/api/project/2/comment
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
-
-{
-  "text": "Neki text @Administrator >>>bvujicic@gmail.com<<< Text posle"
-}
-
-### create comment
-POST http://localhost:6868/api/project/2/comment
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
-
-{
-  "text": "comment text petar.petrovic@eprotokol.com"
-}
-
-
-### update comment
-PUT http://localhost:6868/api/project/44/comment/10000/
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
-
-{
-  "title": "test comment ZZX ssss",
-  "text": "test comment ZZ for Project for development purposes",
-  "documentIds": [10000, 10001]
-}
-
-
-
-### upload document
-POST http://localhost:6868/api/project/1/document
-Authorization: Bearer {{accessToken}}
-Content-Type: multipart/form-data; boundary=WebAppBoundary
-
---WebAppBoundary
-Content-Disposition: form-data; name="document"
-Content-Type: application/json
-
-{
-  "name": "test document with šđčćž",
-  "type": "FILE",
-  "source": "COMPUTER"
-}
---WebAppBoundary
-Content-Disposition: form-data; name="file"; filename="download.jpg"
-Content-Type: image/jpeg
-
-< /home/bane/Pictures/download.jpg
---WebAppBoundary--
-
-
-### upload link
-POST http://localhost:6868/api/project/1/document
-Authorization: Bearer {{accessToken}}
-Content-Type: multipart/form-data; boundary=WebAppBoundary
-
---WebAppBoundary
-Content-Disposition: form-data; name="document"
-Content-Type: application/json
-
-{
-  "name": "test document with šđčćž",
-  "type": "URL",
-  "source": "URL",
-  "url": "https://docs.google.com/document/d/1x6i_58wPkwUyGWD1kEklyAAVY-YGOU6vI_XXYYZZ/edit?usp=sharing"
-}
---WebAppBoundary
-
-
-### get organization settings
-
-GET http://localhost:6868/setup/get
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
-
-### update organization name
-
-POST http://localhost:6868/api/setup/name
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
-
-{
-  "name": "Test Organizacija"
-}
-
-### upload logo
-
-POST http://localhost:6868/api/setup/logo
-Authorization: Bearer {{accessToken}}
-Content-Type: multipart/form-data; boundary=WebAppBoundary
-
---WebAppBoundary
-Content-Disposition: form-data; name="document"
-Content-Type: application/json
-
-{
-  "name": "test LOGO",
-  "comment": "LEGO",
-  "type": "FILE",
-  "source": "COMPUTER"
-}
---WebAppBoundary
-Content-Disposition: form-data; name="file"; filename="download02.jpg"
-Content-Type: image/jpeg
-
-< /home/bane/Pictures/download.jpg
---WebAppBoundary--
-
-###
-
-POST http://localhost:6868/api/project/44/document
-Authorization: Bearer {{accessToken}}
-Content-Type: multipart/form-data; boundary=WebAppBoundary
-
---WebAppBoundary
-Content-Disposition: form-data; name="document"
-Content-Type: application/json
-
-{
-  "name": "test document xcx 11 22 vv",
-  "comment": "some document comment",
-  "type": "URL",
-  "source": "GOOGLE_DRIVE",
-  "url": "https://docs.google.com/document/d/16qvBPQ-wTVBJ833jvqNZT-mIgXtzbgESgzTG4PhzFTA/edit?usp=sharing"
-}
---WebAppBoundary
-
-
-### get single document
-GET  http://localhost:6868/api/project/44/document/62
-Authorization: Bearer {{accessToken}}
-
-
-### download document
-GET  http://localhost:6868/api/project/44/document/62/download
-Authorization: Bearer {{accessToken}}
-
-<> ~/home/bane
-
-
-### refresh token
-GET  http://localhost:6868/refresh-token
-Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidnVqaWNpY0BnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iXSwicmlnaHRzIjpbXSwiaWF0IjoxNjQ3MDAzMjc0LCJleHAiOjE2NDcwMzIwNzQsInJ0X2V4cCI6MTY0OTU5NTI3NDc3M30.0GIs8p3M0bPaL4x5p3sFnLvz526iLXPu_yW9p6B6vCngwFS6bCXLvPNQz-9MG4xK_gsUxYhlg2ANrAbMJWLztw
-
-
-
-
-
-# curl -X GET --location "http://localhost:6868/api/setup/logo/download" -H "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidnVqaWNpY0BnbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiIsIlVTRVIiXSwicmlnaHRzIjpbXSwiaWF0IjoxNjQ3Njg0MzkyLCJleHAiOjE2NDc3NzA3OTJ9.BPsuiedK-pV2a6_jvYjvGouoH-VcuR3f867wg9_HWh6nR9I667Mx_NCJ7JRdKvXKlbFy6Ljtu9PpWcc1UtrtjA" --output ~/home/bane/tmp
-
-###
-
-###
-
-
-# curl -X GET --location "http://localhost:6868/api/setup/logo/download" -H "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidnVqaWNpY0BnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iXSwicmlnaHRzIjpbXSwiaWF0IjoxNjQ3MDAzMjc0LCJleHAiOjE2NDcwMzIwNzQsInJ0X2V4cCI6MTY0OTU5NTI3NDc3M30.0GIs8p3M0bPaL4x5p3sFnLvz526iLXPu_yW9p6B6vCngwFS6bCXLvPNQz-9MG4xK_gsUxYhlg2ANrAbMJWLztw" --output /home/bane/tmp
-GET http://localhost:6868/api/setup/logo/download
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidnVqaWNpY0BnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iXSwicmlnaHRzIjpbXSwiaWF0IjoxNjQ3MDAzMjc0LCJleHAiOjE2NDcwMzIwNzQsInJ0X2V4cCI6MTY0OTU5NTI3NDc3M30.0GIs8p3M0bPaL4x5p3sFnLvz526iLXPu_yW9p6B6vCngwFS6bCXLvPNQz-9MG4xK_gsUxYhlg2ANrAbMJWLztw --output /home/bane/tmp
-
-###
-
-
-
-###
-
-###
-
-###
-
-
-
-#  curl -X POST --location "http://localhost:6868/api/project/44/document" \
-#      -H "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidnVqaWNpY0BnbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiIsIlVTRVIiXSwicmlnaHRzIjpbXSwiaWF0IjoxNjQzMDE2OTA1LCJleHAiOjE2NDMxMDMzMDV9.B6GN_fyhZ7Rnk1OM8VnYRgpj5FUDslbNL5I6i9WhwR0CA45dTGS_lPE5nl5zv70q4Ovfc_hD7lvN0j5AeTakfg" \
-#      -H "Content-Type: multipart/form-data; boundary=WebAppBoundary" \
-#      -F "document={
-#    \"name\": \"test document xcx 11 22 33\",
-#    \"comment\": \"some document comment 33\",
-#    \"type\": \"URL\",
-#    \"source\": \"GOOGLE_DRIVE\",
-#    \"url\": \"https://docs.google.com/document/d/16qvBPQ-wTVBJ833jvqNZT-mIgXtzbgESgzTG4PhzFTA/edit?usp=sharing\"
-#  };type=application/json"
-
-
-
-### 
-### login
-POST http://localhost:6868/login
-Content-Type: application/json
-
-{
-  "email": "bvujicic@gmail.com",
-  "password": "26N64AcWYszk"
-}
-
-> {%
-    client.global.set("accessToken", response.body.accessToken);
-  %}
-
-### current logged user
-GET  http://localhost:6868/api/user/me
+###  get project tasks
+GET  http://localhost:6868/api/project/3/task
 Accept: application/json
 Authorization: Bearer {{accessToken}}
 
 
-### list all users
-GET  http://localhost:6868/api/user
+
+###  get ONE project task
+GET  http://localhost:6868/api/project/3/task/2
 Accept: application/json
 Authorization: Bearer {{accessToken}}
 
 
-### list all users
-GET  http://localhost:6868/api/user?sort=createdOn&order=DESC
-Accept: application/json
-Authorization: Bearer {{accessToken}}
 
-### index FT
-
-POST http://localhost:6868/api/admin/index
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-
-###
-
-#### Prezentacija opštine
-
-###
-GET www.google.com
-
-### setup create
-POST http://localhost:6868/setup
+###  create project task
+POST  http://localhost:6868/api/project/3/task
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "name": "Admin User",
-  "email": "admin@eprotokol.com",
-  "password": "test"
+  "authorId": 1,
+  "userId": 1,
+  "title": "task title 3",
+  "text": "text of the task 3",
+  "status": "NEW",
+  "time": "2022-06-30 12:00:00"
 }
 
-### setup check
-GET http://localhost:6868/setup/check
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-
-### project start search
-GET http://localhost:6868/api/project?sort=id
-Accept: application/json
-Authorization: Bearer {{accessToken}}
 
 
-
-### project start search
-GET http://localhost:6868/api/project?deleted=true
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-
-
-### api admin index
-POST http://localhost:6868/api/admin/index
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-
-
-
-### user search
-GET http://localhost:6868/api/search/user?name=jkp
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-
-###
-
-GET http://localhost:6868/api/search/user/fuzzy?name=Brani&sort=id
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-
-### project start search favorite
-GET http://localhost:6868/api/search/project/start?text=Izgradnja&favorite=true&sort=id
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-
-### project start search
-GET http://localhost:6868/api/search/project/start?text=izgradnja&sort=id
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-
-### project start search own
-GET http://localhost:6868/api/project?active=false
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-
-### project start search own
-GET http://localhost:6868/api/search/project/start?favorite=true
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-
-### project start search own
-GET http://localhost:6868/api/search/project/start?own=true&favorite=true
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-
-### project start search empty
-GET http://localhost:6868/api/search/project/start?sort=id&own=true
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-
-### tag search
-GET http://localhost:6868/api/search/tag?name=radna
-Accept: application/json
-Authorization: Bearer {{accessToken}}
-
-### list tags
-GET http://localhost:6868/api/project/tag
-Authorization: Bearer {{accessToken}}
-
-### list tag details
-GET http://localhost:6868/api/project/tag/details?page=0&size=15
-Authorization: Bearer {{accessToken}}
-
-### list tag details
-GET http://localhost:6868/api/project/44/log?sort=id&order=DESC&size=100
-Authorization: Bearer {{accessToken}}
-
-### delete tag
-DELETE http://localhost:6868/api/project/tag/10005
-Authorization: Bearer {{accessToken}}
-
-### delete project
-DELETE http://localhost:6868/api/project/44
-Authorization: Bearer {{accessToken}}
-
-
-### undelete project
-PUT http://localhost:6868/api/project/44/undelete
-Authorization: Bearer {{accessToken}}
-
-
-###  list project
-GET http://localhost:6868/api/project
-Authorization: Bearer {{accessToken}}
-
-###  get project 44
-GET http://localhost:6868/api/project/49
-Authorization: Bearer {{accessToken}}
-
-###  get project 44
-GET http://localhost:6868/api/project/44
-Authorization: Bearer {{accessToken}}
-
-###  get project 44
-GET http://localhost:6868/api/project/44/log?sort=id&order=DESC
-Authorization: Bearer {{accessToken}}
-
-### add tag to project /{id}/tag/{tagId}/add
-PUT http://localhost:6868/api/project/44/tag/4/add
-Authorization: Bearer {{accessToken}}
-
-
-### remove tag from project /{id}/tag/{tagId}/remove
-DELETE http://localhost:6868/api/project/44/tag/4/remove
-Authorization: Bearer {{accessToken}}
-
-
-### add tag to project /{id}/tag/{tagId}/add
-PUT http://localhost:6868/api/project/49/tag/4/add
-Authorization: Bearer {{accessToken}}
-
-
-### remove tag from project /{id}/tag/{tagId}/remove
-DELETE http://localhost:6868/api/project/49/tag/4/remove
-Authorization: Bearer {{accessToken}}
-
-###
-#id
-#1
-#24
-#10006
-#10007
-#10008
-
-
-### get project
-GET http://localhost:6868/api/project/44
-Authorization: Bearer {{accessToken}}
-
-
-### add tag to project /{id}/tag/{tagId}/add
-PUT http://localhost:6868/api/project/1/member/10011/add
-Authorization: Bearer {{accessToken}}
-
-
-### remove tag from project /{id}/tag/{tagId}/remove
-DELETE http://localhost:6868/api/project/1/member/10011/remove
-Authorization: Bearer {{accessToken}}
-
-
-### get project 44
-GET http://localhost:6868/api/project/44/log
-Authorization: Bearer {{accessToken}}
-
-
-### get project 44
-GET http://localhost:6868/api/project/44
-Authorization: Bearer {{accessToken}}
-
-
-### leave project
-PUT http://localhost:6868/api/project/44/leave
-Authorization: Bearer {{accessToken}}
-
-### add user to 10008 to project 44
-PUT http://localhost:6868/api/project/44/organizer/1/add
-Authorization: Bearer {{accessToken}}
-
-### add user to 10008 to project 44
-PUT http://localhost:6868/api/project/44/member/1/add
-Authorization: Bearer {{accessToken}}
-
-
-### remove tag from project /{id}/tag/{tagId}/remove
-### remove tag from project /{id}/tag/{tagId}/remove
-DELETE http://localhost:6868/api/project/44/organizer/1/remove
-Authorization: Bearer {{accessToken}}
-
-### add user to 10008 to project 44
-PUT http://localhost:6868/api/project/44/leave
-Authorization: Bearer {{accessToken}}
-
-
-### remove tag from project /{id}/tag/{tagId}/remove
-DELETE http://localhost:6868/api/project/44/member/10008/remove
-Authorization: Bearer {{accessToken}}
-
-
-
-### add user
-POST http://localhost:6868/api/user
+###  update project task
+PUT  http://localhost:6868/api/project/3/task/2
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "name": "Branimir Vujicic",
-  "email": "branimir.vujicic.uva+115@gmail.com",
-  "unitId": 13,
-  "positionId": 11,
-  "roles": [
-    "USER"
-  ]
+  "authorId": 1,
+  "userId": 1,
+  "title": "task title 2 updated",
+  "text": "text of the task updated",
+  "status": "NEW",
+  "time": "2022-06-30 12:00:00"
 }
 
 
-###
-# create sandbox
-POST https://ivan.uvaresearch.com:8055/1.0/sandbox/create
-Content-Type: application/x-www-form-urlencoded
+###  update project task status
+PUT  http://localhost:6868/api/project/3/task/2/status/IN_PROGRESS
+Accept: application/json
+Authorization: Bearer {{accessToken}}
 
-client_id=6&client_secret=x597dBSBXc46OVVu&email=bvujicic.2@gmail.com&organization=bane002&name=bane&password=test
-
-###

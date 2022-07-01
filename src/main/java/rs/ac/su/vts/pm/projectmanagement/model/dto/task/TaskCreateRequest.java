@@ -1,5 +1,6 @@
 package rs.ac.su.vts.pm.projectmanagement.model.dto.task;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import rs.ac.su.vts.pm.projectmanagement.model.common.Status;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Schema(description = "Task Create Request Model")
 @Data
@@ -18,8 +20,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TaskCreateRequest
-{
+public class TaskCreateRequest {
 
     @Schema(description = "Project id")
     private Long projectId;
@@ -39,4 +40,7 @@ public class TaskCreateRequest
 
     @Schema(description = "Task status")
     private Status status;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime time;
 }

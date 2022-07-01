@@ -36,14 +36,11 @@ dependencies {
 
   implementation "com.querydsl:querydsl-jpa:5.0.0"
   implementation "com.querydsl:querydsl-core:5.0.0"
-  implementation "org.mapstruct:mapstruct:1.4.2.Final"
+  implementation 'org.mapstruct:mapstruct:1.5.1.Final'
 
   implementation 'io.jsonwebtoken:jjwt:0.9.1'
   // warning: unknown enum constant When.MAYBE
   implementation 'com.google.code.findbugs:jsr305:3.0.2'
-
-  //    file upload
-  implementation 'commons-fileupload:commons-fileupload:1.4'
 
   compileOnly 'org.projectlombok:lombok'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -52,7 +49,7 @@ dependencies {
   annotationProcessor 'org.projectlombok:lombok'
   annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jpa"
   annotationProcessor "org.springframework.boot:spring-boot-starter-data-jpa:2.6.7"
-  annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
+  annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.1.Final'
 
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.security:spring-security-test'
