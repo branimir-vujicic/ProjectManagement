@@ -17,6 +17,7 @@ import rs.ac.su.vts.pm.projectmanagement.model.entity.User;
 import rs.ac.su.vts.pm.projectmanagement.repository.TaskRepository;
 
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.String.format;
 
@@ -53,13 +54,23 @@ public class TaskService {
         Task task = TaskMapper.INSTANCE.from(taskCreateRequest);
         task.setProject(projectService.getProjectById(taskCreateRequest.getProjectId()));
         task.setAuthor(userService.getLoggedUser());
-        task.setUser(userService.getLoggedUser());
+        if (taskCreateRequest.getUserId() != null) {
+            User assignee = userService.getUserById(taskCreateRequest.getUserId());
+            task.setUser(assignee);
+        } else {
+            task.setUser(userService.getLoggedUser());
+        }
         return taskRepository.save(task);
     }
 
     public Task updateTask(TaskUpdateRequest taskUpdateRequest) {
         Task task = getTaskById(taskUpdateRequest.getId());
         TaskMapper.INSTANCE.fromUpdateRequest(taskUpdateRequest, task);
+        Long userId = taskUpdateRequest.getUserId();
+        if (userId != null && task.getUser() != null && !Objects.equals(task.getUser().getId(), userId)) {
+            User assignee = userService.getUserById(userId);
+            task.setUser(assignee);
+        }
         return taskRepository.save(task);
     }
 

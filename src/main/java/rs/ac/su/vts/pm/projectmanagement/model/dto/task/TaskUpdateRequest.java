@@ -18,8 +18,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TaskUpdateRequest
-{
+public class TaskUpdateRequest {
 
     @Schema(hidden = true)
     private Long id;
@@ -32,6 +31,10 @@ public class TaskUpdateRequest
     @Schema(required = true, description = "Task text", example = "Text of a Test Task")
     private String text;
 
+    @Schema(required = false, description = "Assignee", example = "Assignee Id")
+    private Long userId;
+
     @Schema(description = "Task status")
     private Status status;
+
 }
